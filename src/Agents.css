@@ -1,0 +1,129 @@
+
+.agents-window {
+    width: 100%;
+    padding: 0 2rem 2rem 2rem;
+    box-sizing: border-box;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding:0;
+  }
+  
+
+  
+  .agents-window h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+  }
+  
+  .agents-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+  
+  .agent-item {
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .agent-info h3 {
+    margin-top: 0;
+  }
+  
+  .agent-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+  
+  .edit-button, .delete-button, .save-button, .cancel-button {
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  
+  .edit-button {
+    background-color: #696969;
+    color: white;
+  }
+  
+  .delete-button {
+    background-color: #8a1719;
+    color: white;
+  }
+  
+  .save-button {
+    background-color: #646cff;
+    color: white;
+  }
+  
+  .cancel-button {
+    background-color: #faad14;
+    color: white;
+  }
+  
+  .agent-form {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 2rem 2rem 2rem;
+    
+  }
+  
+  .input-field {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #3a3a3a;
+    background-color: #2a2a2a;
+    color: #fff;
+  }
+  
+  .tools-selection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .tool-checkbox {
+    display: flex;
+    align-items: center;
+    background-color: #2a2a2a;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+  
+  .tool-checkbox input {
+    margin-right: 0.5rem;
+  }
+  
+  .add-new-agent {
+    margin-top: 2rem;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    padding: 1rem;
+    width: 60%;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .add-new-agent h3 {
+    margin-top: 0;
+  }

@@ -1,0 +1,40 @@
+.top-bar {
+    color: #faf9f6;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+}
+h1 {
+    margin: 0;
+    color: #faf9f6;
+}
+h1 span {
+    background: -webkit-linear-gradient( rgba(8, 8, 44, 0.87), #646cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.link {
+    color:  #646cff;
+    padding : 10px 10px 2px 10px;
+}
+
+.link:hover {
+    scale: 1.05;
+    transition: ease-in-out 0.2s;
+}
+
+.link.active {
+    border-bottom : 2px solid #646cff;
+}
+    
+
+.page-links-container {
+    display: flex;
+    justify-content: center; 
+    text-align: center;
+    gap: 10px;
+    
+}

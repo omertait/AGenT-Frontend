@@ -1,0 +1,5 @@
+<svg class="curved-lines" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+    <path class="curved-line" d="M 50% 0 Q 25% 25%, 0 50%" />
+    <path class="curved-line" d="M 50% 33% Q 75% 58%, 100% 83%" />
+    <path class="curved-line" d="M 50% 66% Q 25% 91%, 0 116%" />
+</svg>

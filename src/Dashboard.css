@@ -1,0 +1,148 @@
+
+      .dndflow {
+        display: flex;
+        flex-direction: row;
+        height: 80vh;
+      }
+      .dndflow aside {
+        width: 20%;
+        max-width: 250px;
+        border-right: 1px solid #a4a4a4;
+        /* box-shadow: 0 0 10px #646cff73; */
+        padding: 15px 10px;
+        font-size: 12px;
+      }
+      .dndflow aside .description {
+        margin-bottom: 10px;
+      }
+      .dndflow .dndnode {
+        background-color: #f0f0f0;
+        color: black; 
+        height: 30px;
+        padding: 4px;
+        border: 1px solid #1a192b;
+        border-radius: 2px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: grab;
+      }
+      .dndflow .reactflow-wrapper {
+        flex-grow: 1;
+        height: 100%;
+      }
+      
+      .task-node.start{
+        box-shadow: 0 0 10px 2px #5445dacb;
+      }
+      .task-node {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #1a192b;
+        background-color: #f0f0f0;
+        text-align: center;
+      }
+      
+  
+      .task-node .task-name {
+        font-weight: bold;
+        color: #333;
+      }
+      .task-node .agent-name {
+        font-size: 0.8em;
+        color: #666;
+      }
+      .edit-modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        color: #f0f0f0;
+        text-align: center;
+        background: #0f0f0f;
+      }
+      .edit-modal input {
+        display: block;
+        margin-bottom: 10px;
+        width: 100%;
+        padding: 5px;
+      }
+      .edit-modal input[type="checkbox"]{
+        display: inline;
+        width: auto;
+      }
+      .edit-modal label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        text-align: left;
+      }
+      .edit-modal button {
+        margin-right: 10px;
+      }
+      aside{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .dndnodes{
+        flex: 9;
+      }
+
+      .actions::before {
+        /* horizontal line divider*/
+        content: '';
+        display: block;
+        width: 100%;
+        height: 1px;
+        /* gradient */
+        background: linear-gradient(to right, #a4a4a419, #646cff, #a4a4a419);
+        margin-bottom: 1rem;
+        
+      }
+
+        @keyframes shine {
+            to {
+            background-position: 200% center;
+            }
+        }
+
+      .actions {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        margin-top: 2rem;
+        align-items: center;
+        flex: 1;
+      }
+
+      .actions button {
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 180px;
+        }
+
+        .actions .build-button {
+          background-color: #646cff;
+        }
+
+        .actions .export-button {
+          background-color: #b164ff;
+        }
+
+      @media screen and (max-width: 768px) {
+        .dndflow {
+          flex-direction: column;
+        }
+        .dndflow aside {
+          width: 100%;
+          max-width: 100%;
+        }
+      }
