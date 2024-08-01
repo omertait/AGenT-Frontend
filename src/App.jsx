@@ -5,39 +5,59 @@ import TopBar from './TopBar';
 import LandingPage from './LandingPage';
 import Agents from './Agents';
 import Tools from './Tools';
+import {
+  useNodesState,
+  useEdgesState,
+} from 'reactflow';
 
 function App() {
 
   const [agents, setAgents] = useState([
-    { id: 1, name: 'Agent 1', role: 'Assistant', tools: ['Web Search', 'Calculator'] },
-    { id: 2, name: 'Agent 2', role: 'Researcher', tools: ['Web Search', 'Text Analysis'] },
+    { id: 1, name: 'John', role: 'Act as a Friend', tools: ['calculator'] },
   ]);
 
   const [tools, setTools] = useState([
     {
-      name: "get_current_weather",
-      description: "Get the current weather in a given location",
+      name: "calculator",
+      description: "calculates two numbers based on given operation (add/ subtract/ multiply/ divide)",
       parameters: [
         {
-          name: "location",
-          type: "string",
-          description: "The city and state, e.g. San Francisco, CA",
+          name: "x",
+          type: "int",
+          description: "First number",
           required: true
         },
         {
-          name: "format",
-          type: "string",
-          description: "The temperature unit to use. Infer this from the user's location.",
+          name: "y",
+          type: "int",
+          description: "Second number",
           required: true
-        }
+        },
+        {
+          name: "operation",
+          type: "string",
+          description: "One of: add/ subtract/ multiply/ divide",
+          required: true
+        },
       ],
       function: `
-def get_current_weather(location, format):
-    # Implementation details here
-    pass
+def calculator_two_numbers(x, y, operation):
+    if operation == \"add\":
+        return x + y
+    elif operation == \"subtract\":
+        return x - y
+    elif operation == \"multiply\":
+        return x * y
+    elif operation == \"divide\":
+        return x / y
+    else:
+        return None
       `
-    },
+    }
   ]);
+
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
   return (
     <Router>
@@ -51,7 +71,15 @@ def get_current_weather(location, format):
           element={
             <>
               <TopBar active='Tasks'/>
-              <Dashboard />
+              <Dashboard
+               nodes={nodes}
+               setNodes={setNodes}
+               onNodesChange={onNodesChange}
+               edges={edges}
+               setEdges={setEdges}
+               onEdgesChange={onEdgesChange}
+               agents={agents}
+               tools={tools}/>
             </>
           }
         />
@@ -60,7 +88,7 @@ def get_current_weather(location, format):
           element={
             <>
               <TopBar active='Agents'/>
-              <Agents agents={agents} setAgents={setAgents}/>
+              <Agents agents={agents} setAgents={setAgents} tools={tools}/>
             </>
           }
         />

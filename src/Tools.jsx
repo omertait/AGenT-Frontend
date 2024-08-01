@@ -132,7 +132,7 @@ const ToolsTab = ({tools, setTools}) => {
       <textarea
         value={tool.function}
         onChange={(e) => updateTool('function', e.target.value, isNew)}
-        placeholder="Python Function Code"
+        placeholder="Python Function Code, e.g. def my_function(param1, param2):..."
         className="input-field function-input"
         rows="10"
       />

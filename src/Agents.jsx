@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './Agents.css';
 
-const AgentsWindow = ({agents, setAgents}) => {
-  const predefinedTools = ['Web Search', 'Calculator', 'Text Analysis', 'Image Recognition', 'Language Translation'];
+const AgentsWindow = ({agents, setAgents, tools}) => {
+  let predefinedTools = tools.map((tool) => tool.name);   //['Web Search', 'Calculator', 'Text Analysis', 'Image Recognition', 'Language Translation'];
 
 
   const [editingAgent, setEditingAgent] = useState(null);
@@ -55,7 +55,7 @@ const AgentsWindow = ({agents, setAgents}) => {
         type="text"
         value={agent.role}
         onChange={(e) => isNew ? setNewAgent({...newAgent, role: e.target.value}) : setEditingAgent({...editingAgent, role: e.target.value})}
-        placeholder="Agent Role"
+        placeholder='Agent Role prompt, e.g "act as a professional writer"'
         className="input-field"
       />
       <div className="tools-selection">

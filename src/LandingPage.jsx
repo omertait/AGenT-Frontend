@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './LandingPage.css';
+import AnimatedGraph from './animatedGraph';
+import NoCodeAnimation from './noCode';
+
 
 const LandingPage = () => {
     
@@ -21,29 +24,34 @@ const LandingPage = () => {
             </div>
         </section>
         <section className="features">
+        
         <div className="vertical-lines">
             <div className="vertical-line"></div>
           </div>
-          <div className="feature left">
-            <h3>Graph Visualization</h3>
-            <p>Define agents, tools, tasks, and their relationships visually</p>
-            <div className='icon-container'>
-                <img width="100" height="100" src="https://img.icons8.com/ios/100/serial-tasks--v2.png" alt="serial-tasks--v2"/>            </div>
+          <div className='feature-container'>
+              <div className="feature">
+                <h3>Graph Visualization</h3>
+                <p>Define agents, tools, tasks, and their relationships visually</p>
+                <p>Understand complex relationships instantly and streamline operations with ease. Turn abstract concepts into clear, actionable insights and boost your productivity.</p>
+              </div>
+              <div class="graph-container">
+                <AnimatedGraph />
             </div>
-          <div className="feature right">
-            <h3>No-Code/Low-Code Platform</h3>
-            <p>Create and adjust workflows with minimal coding required</p>
-            <div className='icon-container'>
-                <img width="100" height="100" src="/src/assets/code.png" alt="code"/>
+          </div>
+          <div className='feature-container'>
+          <div class="graph-container">
+                <NoCodeAnimation />
             </div>
-            
+            <div className="feature">
+              <h3>No-Code/Low-Code Platform</h3>
+              <p>Create and adjust workflows with minimal coding required</p>
+              <p>This platform empowers both experienced developers and non-technical users to innovate rapidly and flexibly. Save time, reduce costs, and unleash your creativity without the steep learning curve of traditional coding</p>
+            </div>
           </div>
           <div className="feature left">
             <h3>Customizable Workflows</h3>
             <p>Easily adapt workflows to meet your specific needs</p>
-            <div className='icon-container'>
-                <img width="100" height="100" src="/src/assets/build.png" alt="adjust"/>
-            </div>
+            <p>Our platform is highly adjustable and versatile to fit every need, giving you the true ability to harness the power of agents. Modify and personalize workflows effortlessly, ensuring your operations align perfectly with your goals. With this level of customization, the sky is the limit</p>
           </div>
         </section>
       </main>

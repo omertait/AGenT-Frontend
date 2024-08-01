@@ -53,38 +53,8 @@
         font-size: 0.8em;
         color: #666;
       }
-      .edit-modal {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        color: #f0f0f0;
-        text-align: center;
-        background: #0f0f0f;
-      }
-      .edit-modal input {
-        display: block;
-        margin-bottom: 10px;
-        width: 100%;
-        padding: 5px;
-      }
-      .edit-modal input[type="checkbox"]{
-        display: inline;
-        width: auto;
-      }
-      .edit-modal label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 5px;
-        text-align: left;
-      }
-      .edit-modal button {
-        margin-right: 10px;
-      }
+      
+
       aside{
         position: relative;
         display: flex;
@@ -140,9 +110,12 @@
       @media screen and (max-width: 768px) {
         .dndflow {
           flex-direction: column;
+          height: 1000px;
         }
         .dndflow aside {
           width: 100%;
           max-width: 100%;
         }
+
+        
       }

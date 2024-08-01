@@ -12,15 +12,16 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import TaskNode from './TaskNode';
 import './Dashboard.css';
+import EditTask from './EditTask';
 
-const initialNodes = [
-  { id: '1', type: 'customNode', position: { x: 250, y: 5 }, data: { isStartNode: true, taskName: 'Start Task', agent: 'Initial Agent'} },
-];
+// const initialNodes = [
+//   { id: '1', type: 'customNode', position: { x: 250, y: 5 }, data: { isStartNode: true, taskName: 'Start Task', agent: 'Initial Agent'} },
+// ];
 
 const nodeTypes = [
-  { type: 'LLM_interact', label: 'Interact' },
-  { type: 'tool', label: 'RAG' },
-  { type: 'update_memory', label: 'Update Memory' },
+  { type: 'LLM_interact', label: 'Interact' , data: { steps: [{type : "llm_interact", promptTemplate : "responed to the following: {task_input}\n\nact as a friend.", model: "gpt-3.5-turbo"}] } },
+  { type: 'tool', label: 'RAG', data: { steps: [] } },
+  { type: 'update_memory', label: 'Update Memory', data: { steps: [] } },
 ];
 
 let id = 0;
@@ -28,38 +29,126 @@ const getId = () => `dndnode_${id++}`;
 
 const nodesTypes = { customNode: TaskNode };
 
-const DnDFlow = () => {
+const DnDFlow = ({
+  nodes, setNodes, onNodesChange,
+  edges, setEdges, onEdgesChange,
+  agents, tools
+}) => {
   const reactFlowWrapper = useRef(null);
-  const [startNode, setStartNode] = useState(initialNodes[0]);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [editNode, setEditNode] = useState(null);
-
+  const reshapeJson = (clientJson) => {
+      const reshapedJson = {
+        tools: [],
+        agent: {
+          name: "",
+          role: "",
+          tools: []
+        },
+        task_functions: [],
+        tasks: [],
+        flow_graph: {
+          tasks: [],
+          start_node: "",
+          edges: []
+        },
+        conversation_manager: {
+          conversation_id: "1",
+          input: ""
+        }
+      };
+  
+      const nodeMap = {};
+  
+      clientJson.nodes.forEach(node => {
+        const taskFunction = {
+          name: node.data.taskName,
+          steps: node.data.steps
+        };
+        reshapedJson.task_functions.push(taskFunction);
+  
+        const task = {
+          name: node.data.taskName,
+          function: node.data.taskName
+        };
+        reshapedJson.tasks.push(task);
+  
+        nodeMap[node.id] = node.data.taskName;
+  
+        const flowTask = {
+          name: node.data.taskName,
+          task: node.data.taskName
+        };
+        reshapedJson.flow_graph.tasks.push(flowTask);
+  
+        if (node.data.isStartNode) {
+          reshapedJson.flow_graph.start_node = node.data.taskName;
+        }
+        node.data.steps.forEach(step => {
+          if (step.type === 'tool') {
+            const toolName = step.tool_name;
+            const tool = tools.find(t => t.name === toolName);
+            if (tool && !reshapedJson.tools.some(t => t.name === tool.name)) {
+              reshapedJson.tools.push(tool);
+            }
+          }
+        });
+  
+        const agentName = node.data.agent;
+        const agent = agents.find(a => a.name === agentName);
+        if (agent) {
+          reshapedJson.agent.name = agent.name;
+          reshapedJson.agent.role = agent.role;
+          reshapedJson.agent.tools = agent.tools;
+        }
+      });
+  
+      clientJson.edges.forEach(edge => {
+        const reshapedEdge = {
+          from: nodeMap[edge.source],
+          to: nodeMap[edge.target]
+        };
+        reshapedJson.flow_graph.edges.push(reshapedEdge);
+      });
+  
+      return reshapedJson;
+    };
+  
   const graphToJSON = () => {
     let graph = { nodes: [], edges: [] };
     nodes.forEach((node) => {
-      graph.nodes.push({ id: node.id, data: node.data, position: node.position });
+      // not returning the postion of the node {position: node.position}
+      graph.nodes.push({ id: node.id ,data: node.data });
     });
     edges.forEach((edge) => {
-      graph.edges.push({ id: edge.id, source: edge.source, target: edge.target });
+      graph.edges.push({ source: edge.source, target: edge.target });
     });
-    return JSON.stringify(graph, null, 2);
+    let x = reshapeJson(graph);
+    return JSON.stringify(x, null, 2);
   }
 
   const checkIfGraphConnected = () => {
+
+    if (nodes.length === 0) {
+      return "Invalid - No nodes";
+    }
+
     let visited = {};
     // check if there is only one start node and retrieve it
-    let startNode = null;
-    nodes.forEach((node) => {
-      if (node.data.isStartNode) {
-        if (startNode) {
-          console.log("Invalid - Multiple start nodes");
-          return false;
-        }
-        startNode = node;
-      }
-    });
+    const startNodes = nodes.filter((node) => node.data.isStartNode);
+    if (startNodes.length > 1) {
+      return "Invalid - Multiple start nodes";
+    }
+    const startNode = startNodes[0];
+
+    if (!startNode) {
+      return "Invalid - No start node";
+    }
+
+    if (!startNode) {
+      return "Invalid - No start node";
+    }
+
     let queue = [startNode.id];
     while (queue.length > 0) {
       let node = queue.shift();
@@ -71,7 +160,10 @@ const DnDFlow = () => {
         }
       });
     }
-    return Object.keys(visited).length === nodes.length;
+    if (Object.keys(visited).length === nodes.length){
+      return graphToJSON()
+    }
+    return "invalid - graph not connected"
   }
 
   const onConnect = useCallback(
@@ -99,16 +191,18 @@ const DnDFlow = () => {
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       });
+      
+      // if there are no start nodes, set the first node as the start node
       const newNode = {
         id: getId(),
         type: 'customNode',
         position,
-        data: { isStartNode: false, taskName: `${type} Task`, agent: 'Unassigned' },
+        data: { isStartNode: nodes.length === 0, taskName: `${type} Task`, agent: 'Unassigned' },
       };
 
       setNodes((nds) => nds.concat(newNode));
     },
-    [reactFlowInstance]
+    [reactFlowInstance, nodes]
   );
 
   const onNodeDoubleClick = useCallback((event, node) => {
@@ -124,7 +218,7 @@ const DnDFlow = () => {
     }
   }, [setNodes, setEdges]);
 
-  const onSaveEdit = useCallback((id, isStartNode, taskName, agent) => {
+  const onSaveEdit = useCallback((id, isStartNode, taskName, agent, steps) => {
     setNodes((nds) =>
       nds.map((node) => {
         if (node.id === id) {
@@ -132,7 +226,7 @@ const DnDFlow = () => {
             // delete all incoming edges
             setEdges((eds) => eds.filter((e) => e.target !== id));
           }
-          return { ...node, data: { ...node.data, isStartNode, taskName, agent } };
+          return { ...node, data: { ...node.data, isStartNode, taskName, agent, steps } };
         }
         return node;
       })
@@ -158,7 +252,7 @@ const DnDFlow = () => {
         ))}
         </div>
         <div className='actions'>
-          <button className='build-button' onClick={()=> checkIfGraphConnected() ? console.log(graphToJSON()) : console.log("Not Valid - Graph is not connected")}>Build</button>
+          <button className='build-button' onClick={()=> console.log(checkIfGraphConnected())}>Build</button>
           <button className='export-button' onClick={()=> setNodes(initialNodes)}>Export</button>
         </div>
       </aside>
@@ -186,42 +280,33 @@ const DnDFlow = () => {
         </div>
       </ReactFlowProvider>
       {editNode && (
-        <div className="edit-modal">
-          <h3>Edit Task</h3>
-          <div style={{'display': 'flex', 'justifyContent': 'space-between'}}>
-          <label>Start Node</label>
-            <input
-            type='checkbox'
-            checked={editNode.data.isStartNode}
-            onChange={(e) => setEditNode({ ...editNode, data: { ...editNode.data, isStartNode: e.target.checked } })}
-            placeholder="Start Node"
-          />
-          </div>
-          
-          <input
-            type="text"
-            value={editNode.data.taskName}
-            onChange={(e) => setEditNode({ ...editNode, data: { ...editNode.data, taskName: e.target.value } })}
-            placeholder="Task Name"
-          />
-          <input
-            type="text"
-            value={editNode.data.agent}
-            onChange={(e) => setEditNode({ ...editNode, data: { ...editNode.data, agent: e.target.value } })}
-            placeholder="Assigned Agent"
-          />
-          <button onClick={() => onSaveEdit(editNode.id, editNode.data.isStartNode, editNode.data.taskName, editNode.data.agent)}>Save</button>
-          <button onClick={() => setEditNode(null)}>Cancel</button>
-        </div>
+        <EditTask 
+          editNode={editNode}
+          setEditNode={setEditNode}
+          onSaveEdit={onSaveEdit}
+          agents={agents}
+        />
       )}
     </div>
   );
 };
 
-const Dashboard = () => {
+const Dashboard = ({
+  nodes, setNodes, onNodesChange,
+  edges, setEdges, onEdgesChange,
+  agents, tools
+}) => {
   return (
     <>
-      <DnDFlow />
+      <DnDFlow 
+      nodes={nodes}
+      setNodes={setNodes}
+      onNodesChange={onNodesChange}
+      edges={edges}
+      setEdges={setEdges}
+      onEdgesChange={onEdgesChange}
+      agents={agents}
+      tools={tools}/>
     </>
   );
 };
