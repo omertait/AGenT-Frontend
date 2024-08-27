@@ -14,14 +14,11 @@ import TaskNode from './TaskNode';
 import './Dashboard.css';
 import EditTask from './EditTask';
 
-// const initialNodes = [
-//   { id: '1', type: 'customNode', position: { x: 250, y: 5 }, data: { isStartNode: true, taskName: 'Start Task', agent: 'Initial Agent'} },
-// ];
 
 const nodeTypes = [
-  { type: 'LLM_interact', label: 'Interact' , data: { steps: [{type : "llm_interact", promptTemplate : "responed to the following: {task_input}\n\nact as a friend.", model: "gpt-3.5-turbo"}] } },
-  { type: 'tool', label: 'RAG', data: { steps: [] } },
-  { type: 'update_memory', label: 'Update Memory', data: { steps: [] } },
+  { type: 'LLM_interact', label: 'Interact' , data: { steps: [{type : "llm_interact", promptTemplate : "responed to the following: {task_input}\n\nact as a friend.", model: "gpt-4o-mini"}] } },
+  // { type: 'tool', label: 'RAG', data: { steps: [] } },
+  // { type: 'update_memory', label: 'Update Memory', data: { steps: [] } },
 ];
 
 let id = 0;
@@ -59,7 +56,7 @@ const DnDFlow = ({
       };
   
       const nodeMap = {};
-  
+
       clientJson.nodes.forEach(node => {
         const taskFunction = {
           name: node.data.taskName,
@@ -84,7 +81,7 @@ const DnDFlow = ({
         if (node.data.isStartNode) {
           reshapedJson.flow_graph.start_node = node.data.taskName;
         }
-        node.data.steps.forEach(step => {
+        node.data.steps?.forEach(step => {
           if (step.type === 'tool') {
             const toolName = step.tool_name;
             const tool = tools.find(t => t.name === toolName);
@@ -134,6 +131,7 @@ const DnDFlow = ({
     }
 
     let visited = {};
+    console.log(nodes)
     // check if there is only one start node and retrieve it
     const startNodes = nodes.filter((node) => node.data.isStartNode);
     if (startNodes.length > 1) {
@@ -179,27 +177,34 @@ const DnDFlow = ({
   const onDrop = useCallback(
     (event) => {
       event.preventDefault();
-
+  
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
       const type = event.dataTransfer.getData('application/reactflow');
-
+  
       if (typeof type === 'undefined' || !type) {
         return;
       }
-
+  
       const position = reactFlowInstance.screenToFlowPosition({
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       });
-      
+  
+      const nodeType = nodeTypes.find(n => n.label === type);
+  
       // if there are no start nodes, set the first node as the start node
       const newNode = {
         id: getId(),
         type: 'customNode',
         position,
-        data: { isStartNode: nodes.length === 0, taskName: `${type} Task`, agent: 'Unassigned' },
+        data: {
+          isStartNode: nodes.length === 0,
+          taskName: `${type} Task`,
+          agent: 'Assistent',
+          ...nodeType.data,  // spread the data from the nodeTypes definition
+        },
       };
-
+  
       setNodes((nds) => nds.concat(newNode));
     },
     [reactFlowInstance, nodes]
@@ -252,8 +257,8 @@ const DnDFlow = ({
         ))}
         </div>
         <div className='actions'>
-          <button className='build-button' onClick={()=> console.log(checkIfGraphConnected())}>Build</button>
-          <button className='export-button' onClick={()=> setNodes(initialNodes)}>Export</button>
+          <button className='build-button' onClick={()=> alert('not implemented')}>Generate</button>
+          <button className='export-button' onClick={()=> console.log(checkIfGraphConnected())}>Build</button>
         </div>
       </aside>
       <ReactFlowProvider>

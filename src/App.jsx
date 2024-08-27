@@ -13,7 +13,8 @@ import {
 function App() {
 
   const [agents, setAgents] = useState([
-    { id: 1, name: 'John', role: 'Act as a Friend', tools: ['calculator'] },
+    { id: 1, name: 'Assistent', role: 'Act as an assistant', tools: [] },
+    { id: 2, name: 'John', role: 'Act as a Friend', tools: ['calculator'] },
   ]);
 
   const [tools, setTools] = useState([
