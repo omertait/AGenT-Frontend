@@ -13,6 +13,7 @@ import 'reactflow/dist/style.css';
 import TaskNode from './TaskNode';
 import './Dashboard.css';
 import EditTask from './EditTask';
+import GenerateWindow from './GenerateWindow';
 
 
 const nodeTypes = [
@@ -31,6 +32,19 @@ const DnDFlow = ({
   edges, setEdges, onEdgesChange,
   agents, tools
 }) => {
+
+  const [isGenWindowOpen, setGenWindowOpen] = useState(false);
+  const [prompt, setPrompt] = useState('');
+
+  const handleOpenGenWindow = () => setGenWindowOpen(true);
+  const handleCloseGenWindow = () => setGenWindowOpen(false);
+
+  const handleSubmit = (prompt) => {
+    console.log('Submitting:', prompt);
+    // Add your code here to send the prompt to your backend
+    setGenWindowOpen(false);
+  };
+
   const reactFlowWrapper = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [editNode, setEditNode] = useState(null);
@@ -257,10 +271,17 @@ const DnDFlow = ({
         ))}
         </div>
         <div className='actions'>
-          <button className='build-button' onClick={()=> alert('not implemented')}>Generate</button>
+          <button className='build-button' onClick={handleOpenGenWindow}>Generate</button>
           <button className='export-button' onClick={()=> console.log(checkIfGraphConnected())}>Build</button>
         </div>
       </aside>
+      <GenerateWindow
+        isOpen={isGenWindowOpen}
+        onClose={handleCloseGenWindow}
+        onSubmit={handleSubmit}
+        prompt={prompt}
+        setPrompt={setPrompt}
+      />
       <ReactFlowProvider>
         <div className="reactflow-wrapper" ref={reactFlowWrapper}>
           <ReactFlow
@@ -301,6 +322,8 @@ const Dashboard = ({
   edges, setEdges, onEdgesChange,
   agents, tools
 }) => {
+
+
   return (
     <>
       <DnDFlow 
