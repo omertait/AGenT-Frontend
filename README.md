@@ -7,6 +7,8 @@ AGent is a no-code/low-code platform that allows users to create, manage, and vi
 - **AGent framework**: AGent is a framework i built for creating agent-based workflows. It abstracts the complexity of agent-based systems and provides a simple, intuitive interface for defining agents, tools, tasks, and relationships.
 you can check the AGent framework [here](https://github.com/omertait/AgenT).
 
+- **UI live demo**: you can check the live demo of the AGent UI [here](https://omertait.github.io/AGent-Frontend).
+
 ## Features
 
 ### 🌟 Graph Visualization
