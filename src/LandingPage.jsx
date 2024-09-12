@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './LandingPage.css';
 import AnimatedGraph from './animatedGraph';
 import NoCodeAnimation from './noCode';
+import agentLogoImg from './assets/agent.png';
 
 
 const LandingPage = () => {
@@ -17,7 +18,7 @@ const LandingPage = () => {
           <Link to={{pathname:'/Tasks'}}><button className="cta-button">Get Started</button></Link>
         </section>
         <section className='about'>
-            <img src={import.meta.env.BASE_URL + "/src/assets/agent.png"} alt="Graph Visualization" />
+            <img src={agentLogoImg} alt="Graph Visualization" />
             <div className="about-text">
                 <h3>What is AGent?</h3>
                 <p>AGent is a no-code/low-code platform that allows you to create and manage workflows with ease. Define agents, tools, tasks, and their relationships visually with our graph visualization feature. Work seamlessly with AI agents to enhance productivity and easily adapt workflows to meet your specific needs.</p>
