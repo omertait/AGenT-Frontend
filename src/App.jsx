@@ -61,7 +61,7 @@ def calculator_two_numbers(x, y, operation):
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
   return (
-    <Router basename='/AGent-Frontend/'>
+    <Router basename={import.meta.env.BASE_URL}>
       <Routes>
         <Route path="/" element={<>
           <TopBar active=''/>
