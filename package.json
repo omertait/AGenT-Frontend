@@ -1,5 +1,6 @@
 {
   "name": "my-react-flow-app",
+  "homepage": "https://omertait.github.io/AGent-Frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,10 +8,13 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "framer-motion": "^11.2.14",
+    "gh-pages": "^6.1.1",
     "lucide-react": "^0.399.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
