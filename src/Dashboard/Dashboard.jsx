@@ -10,7 +10,7 @@ import ReactFlow, {
   MarkerType,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import TaskNode from './TaskNode';
+import TaskNode from './components/TaskNode';
 import './Dashboard.css';
 import EditTask from './EditTask';
 import GenerateWindow from './GenerateWindow';

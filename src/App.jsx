@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Dashboard from './Dashboard';
-import TopBar from './TopBar';
-import LandingPage from './LandingPage';
-import Agents from './Agents';
-import Tools from './Tools';
+import Dashboard from './Dashboard/Dashboard';
+import TopBar from './TopBar/TopBar';
+import LandingPage from './LandingPage/LandingPage';
+import Agents from './Agents/Agents';
+import Tools from './Tools/Tools';
 import {
   useNodesState,
   useEdgesState,

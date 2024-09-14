@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './LandingPage.css';
 import AnimatedGraph from './animatedGraph';
 import NoCodeAnimation from './noCode';
-import agentLogoImg from './assets/agent.png';
+import agentLogoImg from '../assets/agent.png';
 
 
 const LandingPage = () => {
