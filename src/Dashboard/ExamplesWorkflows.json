@@ -1,0 +1,311 @@
+{
+    "workflows": [
+      {
+        "agents": [
+          { "id": 1, "name": "Assistant", "role": "Act as an assistant", "tools": [] },
+          { "id": 2, "name": "Math Solver", "role": "Solve mathematical problems", "tools": ["calculator"] }
+        ],
+        "tools": [
+          {
+            "name": "calculator",
+            "description": "Calculates two numbers based on a given operation (add/subtract/multiply/divide)",
+            "parameters": [
+              { "name": "x", "type": "int", "description": "First number", "required": true },
+              { "name": "y", "type": "int", "description": "Second number", "required": true },
+              { "name": "operation", "type": "string", "description": "One of: add/subtract/multiply/divide", "required": true }
+            ],
+            "function": "def calculator_two_numbers(x, y, operation):\n    if operation == \"add\":\n        return x + y\n    elif operation == \"subtract\":\n        return x - y\n    elif operation == \"multiply\":\n        return x * y\n    elif operation == \"divide\":\n        return x / y\n    else:\n        return None"
+          }
+        ],
+        "nodes": [
+          {
+            "id": "node1",
+            "type": "customNode",
+            "data": {
+              "isStartNode": true,
+              "taskName": "Receive Math Question",
+              "agent": "Assistant",
+              "steps": [
+                {
+                  "type": "llm_interact",
+                  "promptTemplate": "You are a math assistant. Respond to this question by extracting the numbers and the operation: {task_input}.",
+                  "model": "gpt-4o"
+                }
+              ]
+            }
+          },
+          {
+            "id": "node2",
+            "type": "customNode",
+            "data": {
+              "isStartNode": false,
+              "taskName": "Perform Calculation",
+              "agent": "Math Solver",
+              "steps": [
+                {
+                  "type": "tool",
+                  "tool": "calculator",
+                  "input_data_func": "{\"x\": int(last_step_result.split(',')[0]), \"y\": int(last_step_result.split(',')[1]), \"operation\": last_step_result.split(',')[2]}"
+                }
+              ]
+            }
+          },
+          {
+            "id": "node3",
+            "type": "customNode",
+            "data": {
+              "isStartNode": false,
+              "taskName": "Store Result in Memory",
+              "agent": "Math Solver",
+              "steps": [
+                {
+                  "type": "update_memory",
+                  "memory_arg": "calculation_result"
+                }
+              ]
+            }
+          },
+          {
+            "id": "node4",
+            "type": "customNode",
+            "data": {
+              "isStartNode": false,
+              "taskName": "Explain Solution",
+              "agent": "Assistant",
+              "steps": [
+                {
+                  "type": "llm_interact",
+                  "promptTemplate": "You asked: {memory[\"user_input\"]}. Using the inputs extracted from your question, x={memory['x']}, y={memory['y']}, and operation={memory['operation']}, the calculated result is {memory['calculation_result']}. Here's how it works: ...",
+                  "model": "gpt-4o-mini"
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          { "source": "node1", "target": "node2" },
+          { "source": "node2", "target": "node3" },
+          { "source": "node3", "target": "node4" }
+        ]
+      },
+      {
+        "agents": [
+          { "id": 1, "name": "Customer Service Agent", "role": "Act as a customer service agent", "tools": [] },
+          { "id": 2, "name": "Manager", "role": "Approve requests and resolve escalations", "tools": [] }
+        ],
+        "tools": [],
+        "nodes": [
+          {
+            "id": "node1",
+            "type": "customNode",
+            "data": {
+              "isStartNode": true,
+              "taskName": "Initial Customer Query",
+              "agent": "Customer Service Agent",
+              "steps": [
+                {
+                  "type": "llm_interact",
+                  "promptTemplate": "Ask the user: 'Hello, how can I assist you today?' and record their input.",
+                  "model": "gpt-4"
+                }
+              ]
+            }
+          },
+          {
+            "id": "node2",
+            "type": "customNode",
+            "data": {
+              "isStartNode": false,
+              "taskName": "Analyze Query",
+              "agent": "Customer Service Agent",
+              "steps": [
+                {
+                  "type": "llm_interact",
+                  "promptTemplate": "Analyze the user's query and classify it as 'billing', 'technical', or 'general'.",
+                  "model": "gpt-4o-mini"
+                }
+              ]
+            }
+          },
+          {
+            "id": "node3",
+            "type": "customNode",
+            "data": {
+              "isStartNode": false,
+              "taskName": "Escalate to Manager",
+              "agent": "Manager",
+              "steps": [
+                {
+                  "type": "llm_interact",
+                  "promptTemplate": "If the query is 'technical' or unresolved, escalate to the manager.",
+                  "model": "gpt-4o"
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          { "source": "node1", "target": "node2" },
+          { "source": "node2", "target": "node3" }
+        ]
+      },
+      {
+        "agents": [
+          { "id": 1, "name": "Sentiment Analyst", "role": "Analyze sentiment in customer feedback", "tools": ["sentiment-analysis"] },
+          { "id": 2, "name": "Feedback Summarizer", "role": "Generate actionable insights from feedback", "tools": ["text-summary"] }
+        ],
+        "tools": [
+          {
+            "name": "sentiment-analysis",
+            "description": "Analyze the sentiment (positive, negative, neutral) of a given text.",
+            "parameters": [
+              { "name": "text", "type": "string", "description": "Customer feedback text", "required": true }
+            ],
+            "function": "def analyze_sentiment(text):\n    pass"
+          },
+          {
+            "name": "text-summary",
+            "description": "Summarizes long texts into actionable insights.",
+            "parameters": [
+              { "name": "text", "type": "string", "description": "Detailed customer feedback", "required": true }
+            ],
+            "function": "def summarize_text(text):\n    pass"
+          }
+        ],
+        "nodes": [
+          {
+            "id": "node1",
+            "type": "customNode",
+            "data": {
+              "isStartNode": true,
+              "taskName": "Gather Feedback",
+              "agent": "Sentiment Analyst",
+              "steps": [
+                {
+                  "type": "llm_interact",
+                  "promptTemplate": "Ask customers to provide feedback about their experience.",
+                  "model": "gpt-4"
+                }
+              ]
+            }
+          },
+          {
+            "id": "node2",
+            "type": "customNode",
+            "data": {
+              "isStartNode": false,
+              "taskName": "Analyze Sentiment",
+              "agent": "Sentiment Analyst",
+              "steps": [
+                {
+                  "type": "tool",
+                  "tool": "sentiment-analysis",
+                  "input_data_func": "{\"text\": task_input}"
+                }
+              ]
+            }
+          },
+          {
+            "id": "node3",
+            "type": "customNode",
+            "data": {
+              "isStartNode": false,
+              "taskName": "Summarize Insights",
+              "agent": "Feedback Summarizer",
+              "steps": [
+                {
+                  "type": "tool",
+                  "tool": "text-summary",
+                  "input_data_func": "{\"text\": last_step_result}"
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          { "source": "node1", "target": "node2" },
+          { "source": "node2", "target": "node3" }
+        ]
+      },
+      {
+        "agents": [
+          { "id": 1, "name": "Meal Planner", "role": "Generate a meal plan based on user preferences", "tools": ["meal-planner"] },
+          { "id": 2, "name": "Nutrition Optimizer", "role": "Optimize meal plans for cost and nutrition", "tools": ["nutrition-optimizer"] }
+        ],
+        "tools": [
+          {
+            "name": "meal-planner",
+            "description": "Generates a weekly meal plan based on dietary preferences.",
+            "parameters": [
+              { "name": "preferences", "type": "string", "description": "Dietary preferences or restrictions", "required": true },
+              { "name": "days", "type": "int", "description": "Number of days for the plan", "required": true }
+            ],
+            "function": "def generate_meal_plan(preferences, days):\n    pass"
+          },
+          {
+            "name": "nutrition-optimizer",
+            "description": "Optimizes a meal plan for nutrition and cost.",
+            "parameters": [
+              { "name": "meal_plan", "type": "object", "description": "Generated meal plan", "required": true }
+            ],
+            "function": "def optimize_meal_plan(meal_plan):\n    pass"
+          }
+        ],
+        "nodes": [
+          {
+            "id": "node1",
+            "type": "customNode",
+            "data": {
+              "isStartNode": true,
+              "taskName": "Gather Preferences",
+              "agent": "Meal Planner",
+              "steps": [
+                {
+                  "type": "llm_interact",
+                  "promptTemplate": "Ask the user for dietary preferences and restrictions.",
+                  "model": "gpt-4"
+                }
+              ]
+            }
+          },
+          {
+            "id": "node2",
+            "type": "customNode",
+            "data": {
+              "isStartNode": false,
+              "taskName": "Generate Meal Plan",
+              "agent": "Meal Planner",
+              "steps": [
+                {
+                  "type": "tool",
+                  "tool": "meal-planner",
+                  "input_data_func": "{\"preferences\": memory['user_preferences'], \"days\": 7}"
+                }
+              ]
+            }
+          },
+          {
+            "id": "node3",
+            "type": "customNode",
+            "data": {
+              "isStartNode": false,
+              "taskName": "Optimize Meal Plan",
+              "agent": "Nutrition Optimizer",
+              "steps": [
+                {
+                  "type": "tool",
+                  "tool": "nutrition-optimizer",
+                  "input_data_func": "{\"meal_plan\": last_step_result}"
+                }
+              ]
+            }
+          }
+        ],
+        "edges": [
+          { "source": "node1", "target": "node2" },
+          { "source": "node2", "target": "node3" }
+        ]
+      }
+    ]
+  }
+  

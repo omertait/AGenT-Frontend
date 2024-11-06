@@ -27,10 +27,10 @@ const getId = () => `dndnode_${id++}`;
 
 const nodesTypes = { customNode: TaskNode };
 
-const DnDFlow = ({
+const Dashboard = ({
   nodes, setNodes, onNodesChange,
   edges, setEdges, onEdgesChange,
-  agents, tools
+  agents, tools, setCurrentExampleIndex, currentExampleIndex
 }) => {
 
   const [isGenWindowOpen, setGenWindowOpen] = useState(false);
@@ -254,7 +254,7 @@ const DnDFlow = ({
   }, [setNodes]);
 
   return (
-    <div className="dndflow">
+    <div className="Dashboard">
       <aside>
         <div className="dndnodes">
         <h2>Drag & Drop Tasks</h2>
@@ -271,8 +271,11 @@ const DnDFlow = ({
         ))}
         </div>
         <div className='actions'>
-          <button className='build-button' onClick={handleOpenGenWindow}>Generate</button>
-          <button className='export-button' onClick={()=> console.log(checkIfGraphConnected())}>Build</button>
+          {/* TO IMPLEMENT - generating workflows with prompt to llms based on JSON Schema */}
+          {/* currently using fixed examples */}
+          {/* <button className='generate-button' onClick={handleOpenGenWindow}>Generate</button> */}
+          <button className='generate-button' onClick={() => setCurrentExampleIndex((currentExampleIndex+1)%4)}>Generate</button>
+          <button className='build-button' onClick={()=> console.log(checkIfGraphConnected())}>Build</button>
         </div>
       </aside>
       <GenerateWindow
@@ -317,26 +320,5 @@ const DnDFlow = ({
   );
 };
 
-const Dashboard = ({
-  nodes, setNodes, onNodesChange,
-  edges, setEdges, onEdgesChange,
-  agents, tools
-}) => {
-
-
-  return (
-    <>
-      <DnDFlow 
-      nodes={nodes}
-      setNodes={setNodes}
-      onNodesChange={onNodesChange}
-      edges={edges}
-      setEdges={setEdges}
-      onEdgesChange={onEdgesChange}
-      agents={agents}
-      tools={tools}/>
-    </>
-  );
-};
 
 export default Dashboard;

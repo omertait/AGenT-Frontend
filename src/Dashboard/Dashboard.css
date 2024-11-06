@@ -1,10 +1,10 @@
 
-      .dndflow {
+      .Dashboard {
         display: flex;
         flex-direction: row;
         height: 80vh;
       }
-      .dndflow aside {
+      .Dashboard aside {
         width: 20%;
         max-width: 250px;
         border-right: 1px solid #a4a4a4;
@@ -12,10 +12,10 @@
         padding: 15px 10px;
         font-size: 12px;
       }
-      .dndflow aside .description {
+      .Dashboard aside .description {
         margin-bottom: 10px;
       }
-      .dndflow .dndnode {
+      .Dashboard .dndnode {
         background-color: #f0f0f0;
         color: black; 
         height: 30px;
@@ -28,7 +28,7 @@
         align-items: center;
         cursor: grab;
       }
-      .dndflow .reactflow-wrapper {
+      .Dashboard .reactflow-wrapper {
         flex-grow: 1;
         height: 100%;
       }
@@ -99,20 +99,20 @@
         width: 180px;
         }
 
-        .actions .build-button {
+        .actions .generate-button {
           background-color: #646cff;
         }
 
-        .actions .export-button {
+        .actions .build-button {
           background-color: #b164ff;
         }
 
       @media screen and (max-width: 768px) {
-        .dndflow {
+        .Dashboard {
           flex-direction: column;
           height: 1000px;
         }
-        .dndflow aside {
+        .Dashboard aside {
           width: 100%;
           max-width: 100%;
         }

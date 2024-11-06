@@ -13,15 +13,28 @@ const EditTask = ({ editNode, setEditNode, onSaveEdit ,agents}) => {
   const specialStrings = ['{task_input}', '{last_step_result}', '{memory["user_input"]}', '{memory["conversation_history"]}', '{memory}'];
 
   const highlightSpecialStrings = (text) => {
-    const parts = text.split(new RegExp(`(${specialStrings.join('|')})`, 'g'));
+    // Escape basic special strings for regex
+    const staticSpecialStrings = specialStrings
+      .filter((str) => !str.includes('[\'') && !str.includes('[\"')) // Exclude dynamic `memory` forms
+      .map((str) => str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')); // Escape static strings
+  
+    // Regex for dynamic memory keys like {memory["key"]}
+    const dynamicMemoryPattern = '\\{memory\\[(["\']).*?\\1\\]}';
+  
+    // Combine static and dynamic patterns into one regex
+    const regex = new RegExp(`(${[...staticSpecialStrings, dynamicMemoryPattern].join('|')})`, 'g');
+  
+    // Split the text by the regex and map each part
+    const parts = text.split(regex);
     return parts.map((part, index) =>
-      specialStrings.includes(part) ? (
+      part.match(new RegExp(dynamicMemoryPattern)) || staticSpecialStrings.includes(part) ? (
         <span key={index} className="special-string">{part}</span>
       ) : (
         <span key={index}>{part}</span>
       )
     );
   };
+  
 
   // make sure that the highlighted-text div width and height are the same as the textarea every time the textarea resizes
   const syncScroll = (index) => {
@@ -40,10 +53,14 @@ const EditTask = ({ editNode, setEditNode, onSaveEdit ,agents}) => {
 
   const resizeTextarea = (index) => {
     const textarea = textareaRefs.current[index];
-    textarea.style.height = 'auto';
-    textarea.style.height = `${textarea.scrollHeight}px`;
-    syncSize(index);
+    if (!textarea) return; // Safeguard against null or undefined refs
+    textarea.style.height = 'auto'; // Reset height to calculate scrollHeight
+    textarea.style.height = `${textarea.scrollHeight}px`; // Set to content height
+    // add 1px buffer
+    textarea.style.height = `${textarea.scrollHeight + 1}px`;
+    syncSize(index); // Ensure overlay is synced
   };
+  
  
 
   const handleStepChange = (index, field, value) => {
@@ -145,14 +162,6 @@ const EditTask = ({ editNode, setEditNode, onSaveEdit ,agents}) => {
           {step.type === 'update_memory' && (
             <>
               <div className="form-group">
-                <label>Update Memory Function</label>
-                <textarea
-                  value={step.update_memory_func}
-                  onChange={(e) => handleStepChange(index, 'update_memory_func', e.target.value)}
-                  placeholder="Update Memory Function"
-                />
-              </div>
-              <div className="form-group">
                 <label>Memory Arg</label>
                 <input
                   type="text"
@@ -205,7 +214,12 @@ const EditTask = ({ editNode, setEditNode, onSaveEdit ,agents}) => {
                     value={step.promptTemplate}
                     onScroll={() => syncScroll(index)}
                     onInput={() => resizeTextarea(index)}
-                    ref={(el) => textareaRefs.current[index] = el}
+                    ref={(el) => {
+                      if (el && el !== textareaRefs.current[index]) {
+                        textareaRefs.current[index] = el;
+                        setTimeout(() => resizeTextarea(index), 0); // Defer resize to after DOM update
+                      }
+                    }}
                     onChange={(e) => handleStepChange(index, 'promptTemplate', e.target.value)}
                     placeholder="Prompt for Agent - e.g. 'respond to the following: {task_input}'"
                   />

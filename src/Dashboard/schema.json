@@ -1,0 +1,92 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "agents": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "integer" },
+            "name": { "type": "string" },
+            "role": { "type": "string" },
+            "tools": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          },
+          "required": ["id", "name", "role", "tools"]
+        }
+      },
+      "tools": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "description": { "type": "string" },
+            "parameters": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "type": { "type": "string" },
+                  "description": { "type": "string" },
+                  "required": { "type": "boolean" }
+                },
+                "required": ["name", "type", "description", "required"]
+              }
+            },
+            "function": { "type": "string" }
+          },
+          "required": ["name", "description", "parameters", "function"]
+        }
+      },
+      "nodes": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "type": { "type": "string" },
+            "data": {
+              "type": "object",
+              "properties": {
+                "isStartNode": { "type": "boolean" },
+                "taskName": { "type": "string" },
+                "agent": { "type": "string" },
+                "steps": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": { "type": "string" },
+                      "promptTemplate": { "type": "string" },
+                      "model": { "type": "string" }
+                    },
+                    "required": ["type", "promptTemplate", "model"]
+                  }
+                }
+              },
+              "required": ["isStartNode", "taskName", "agent", "steps"]
+            }
+          },
+          "required": ["id", "type", "data"]
+        }
+      },
+      "edges": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "source": { "type": "string" },
+            "target": { "type": "string" }
+          },
+          "required": ["source", "target"]
+        }
+      }
+    },
+    "required": ["agents", "tools", "nodes", "edges"]
+  }
+  

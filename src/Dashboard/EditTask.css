@@ -119,6 +119,8 @@
     border: 1px solid #ccc;
     border-radius: 0;
     font-size: medium;
+    font-family:'Courier New', Courier, monospace;
+    overflow: hidden;
   }
 
   
@@ -131,13 +133,13 @@
     position: absolute;
     z-index: 1;
     background: transparent;
-    overflow: auto;
+    overflow: hidden;
     pointer-events: none;
     transition: transform 1s;
     white-space: pre-wrap;
     word-wrap: break-word;
     font-size: medium;
-    font-family: monospace;
+    font-family:'Courier New', Courier, monospace;
 
   }
   /* Popup styles */

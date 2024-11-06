@@ -23,6 +23,15 @@ you can check the AGent framework [here](https://github.com/omertait/AgenT).
 - **Tailor workflows to your needs**: AGent adapts to your specific requirements. Modify and personalize workflows effortlessly, ensuring they align with your objectives.
 - **Versatility and scalability**: Use the platform’s flexibility to scale your operations and integrate advanced AI agents into your workflows.
 
+### 🤖 AI-Powered Workflow Generation
+- **Generate workflows with natural language**: Describe what you want to achieve in a prompt, and let the AI generate the corresponding workflow for you.
+- **Leverage advanced language models**: Utilize the power of large language models (LLMs) to translate your descriptions into actionable workflows, saving time and effort.
+- **Enhance productivity**: Quickly create complex workflows without needing to manually define each component, allowing you to focus on higher-level planning and strategy.
+"""
+Note: In the demo version, the AI-Powered Workflow Generation is not enabled. 
+Instead, it loads prebuilt examples. To see it in action, simply hit the Generate button on the Dashboard.
+"""
+
 
 ## Installation
 
