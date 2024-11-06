@@ -4,7 +4,7 @@ import './LandingPage.css';
 import AnimatedGraph from './animatedGraph';
 import NoCodeAnimation from './noCode';
 import agentLogoImg from '../assets/agent.png';
-
+import CustomizableAnimation from './customizableAnimation';
 
 const LandingPage = () => {
     
@@ -49,10 +49,15 @@ const LandingPage = () => {
               <p>This platform empowers both experienced developers and non-technical users to innovate rapidly and flexibly. Save time, reduce costs, and unleash your creativity without the steep learning curve of traditional coding</p>
             </div>
           </div>
+          <div className='feature-container'>
           <div className="feature left">
             <h3>Customizable Workflows</h3>
             <p>Easily adapt workflows to meet your specific needs</p>
             <p>Our platform is highly adjustable and versatile to fit every need, giving you the true ability to harness the power of agents. Modify and personalize workflows effortlessly, ensuring your operations align perfectly with your goals. With this level of customization, the sky is the limit</p>
+          </div>
+          <div className="graph-container">
+              <CustomizableAnimation />
+          </div>
           </div>
         </section>
       </main>

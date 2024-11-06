@@ -1,0 +1,168 @@
+.animation-container {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    background: transparent;
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+}
+
+.modules-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.module {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    transition: left 1.5s cubic-bezier(0.25, 1, 0.5, 1), top 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.module-inner {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(100, 108, 255, 0.06);
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 16px rgba(100, 108, 255, 0.03);
+    backdrop-filter: blur(6px);
+}
+
+.module.active .module-inner {
+    background: rgba(100, 108, 255, 0.03);
+    box-shadow:
+        0 8px 24px rgba(100, 108, 255, 0.06),
+        0 0 0 1px rgba(100, 108, 255, 0.08);
+    transform: translateY(-2px);
+}
+
+
+.connector-dots {
+    position: absolute;
+    display: flex;
+    gap: 4px;
+    top: 12px;
+    right: 12px;
+}
+
+.connector-dots span {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(100, 108, 255, 0.15);
+    transition: all 0.4s ease;
+}
+
+.module.active .connector-dots span {
+    background: rgba(100, 108, 255, 0.5);
+}
+
+
+/* Customization indicators */
+.module-inner::before,
+.module-inner::after {
+    content: '';
+    position: absolute;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+.module-inner::before {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(100, 108, 255, 0.3), transparent);
+}
+
+.module-inner::after {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(100, 108, 255, 0.3), transparent);
+}
+
+.module.active .module-inner::before,
+.module.active .module-inner::after {
+    opacity: 0.3;
+}
+
+/* Subtle grid lines */
+.module-inner {
+    background-image: 
+        linear-gradient(rgba(100, 108, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(100, 108, 255, 0.02) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+/* Very subtle pulse */
+@keyframes softPulse {
+    0% {
+        box-shadow: 
+            0 8px 24px rgba(100, 108, 255, 0.06),
+            0 0 0 1px rgba(100, 108, 255, 0.08);
+    }
+    50% {
+        box-shadow: 
+            0 8px 24px rgba(100, 108, 255, 0.08),
+            0 0 0 1px rgba(100, 108, 255, 0.12);
+    }
+    100% {
+        box-shadow: 
+            0 8px 24px rgba(100, 108, 255, 0.06),
+            0 0 0 1px rgba(100, 108, 255, 0.08);
+    }
+}
+
+.module.active .module-inner {
+    animation: softPulse 3s ease infinite;
+}
+
+/* Gentle gradient movement */
+.module.active .module-inner {
+    position: relative;
+    overflow: hidden;
+}
+
+.module.active .module-inner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(100, 108, 255, 0.02),
+        rgba(100, 108, 255, 0.04),
+        rgba(100, 108, 255, 0.02),
+        transparent
+    );
+    animation: gentleShine 4s ease-in-out infinite;
+}
+
+@keyframes gentleShine {
+    0% {
+        left: -100%;
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        left: 100%;
+        opacity: 0;
+    }
+}
+
+/* Hover effect */
+.module:hover .module-inner {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(100, 108, 255, 0.04);
+}
