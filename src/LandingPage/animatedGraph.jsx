@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import './animatedGraph.css';
 
 const AnimatedGraph = () => {
   const [nodes, setNodes] = useState([]);
@@ -13,6 +14,8 @@ const AnimatedGraph = () => {
   ];
 
   const circleRadius = 20;
+
+
 
   const calculateEdgePoints = useCallback((source, target) => {
     const dx = target.x - source.x;
@@ -59,20 +62,19 @@ const AnimatedGraph = () => {
   }, [runAnimation]);
 
   return (
-    <div className="w-full h-screen bg-gray-900 flex items-center justify-center overflow-hidden">
+    <div className='graph-back'>
       <svg width="400" height="300" viewBox="0 0 400 300">
         <AnimatePresence>
           {!isResetting && edges.map(({ source, target }, index) => {
             const { x1, y1, x2, y2 } = calculateEdgePoints(nodePositions[source], nodePositions[target]);
             return (
               <motion.line
+                className="edge"
                 key={`edge-${index}`}
                 x1={x1}
                 y1={y1}
                 x2={x2}
                 y2={y2}
-                stroke="white"
-                strokeWidth="2"
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
                 exit={{ opacity: 0 }}
@@ -82,13 +84,11 @@ const AnimatedGraph = () => {
           })}
           {nodes.map((node, index) => (
             <motion.circle
+              className="node"
               key={`node-${index}`}
               cx={node.x}
               cy={node.y}
               r={circleRadius}
-              fill="transparent"
-              stroke="white"
-              strokeWidth="2"
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}

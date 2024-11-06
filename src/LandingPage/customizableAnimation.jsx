@@ -216,7 +216,7 @@ const CustomizableAnimation = () => {
         const r = Math.floor(Math.random() * 256);
         const g = Math.floor(Math.random() * 256);
         const b = Math.floor(Math.random() * 256);
-        return `rgba(${r}, ${g}, ${b}, 0.2)`; // High opacity
+        return `rgba(${r}, ${g}, ${b}, 0.2)`; 
     };
 
     return (
@@ -235,7 +235,6 @@ const CustomizableAnimation = () => {
                             className="module-inner"
                             style={module.color ? { background: module.color } : {}}
                         >
-                            {/* Customize your module content here */}
                             <div className="connector-dots">
                                 <span></span>
                                 <span></span>
