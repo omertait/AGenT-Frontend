@@ -42,7 +42,7 @@ To run this project locally, follow these steps:
 4. Open your browser and visit `http://127.0.0.1:5173/`
 
 ## Usage Documentation
-check out the documentation of the AGent UI [here](https://github.com/omertait/AGent-Frontend/Doucmentation.md).
+check out the documentation of the AGent UI [here](https://github.com/omertait/AGent-Frontend/blob/main/Documentation.md).
 
 ## Work in Progress
 Note that this project is still in development, and there are many features and improvements that i'm planning to add in the future.
