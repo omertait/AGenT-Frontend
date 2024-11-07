@@ -35,12 +35,12 @@ const LandingPage = () => {
                 <p>Define agents, tools, tasks, and their relationships visually</p>
                 <p>Understand complex relationships instantly and streamline operations with ease. Turn abstract concepts into clear, actionable insights and boost your productivity.</p>
               </div>
-              <div class="graph-container">
+              <div className="graph-container">
                 <AnimatedGraph />
             </div>
           </div>
           <div className='feature-container'>
-          <div class="graph-container">
+            <div className="graph-container">
                 <NoCodeAnimation />
             </div>
             <div className="feature">
@@ -50,14 +50,14 @@ const LandingPage = () => {
             </div>
           </div>
           <div className='feature-container'>
-          <div className="feature left">
-            <h3>Customizable Workflows</h3>
-            <p>Easily adapt workflows to meet your specific needs</p>
-            <p>Our platform is highly adjustable and versatile to fit every need, giving you the true ability to harness the power of agents. Modify and personalize workflows effortlessly, ensuring your operations align perfectly with your goals. With this level of customization, the sky is the limit</p>
-          </div>
-          <div className="graph-container">
-              <CustomizableAnimation />
-          </div>
+            <div className="feature left">
+              <h3>Customizable Workflows</h3>
+              <p>Easily adapt workflows to meet your specific needs</p>
+              <p>Our platform is highly adjustable and versatile to fit every need, giving you the true ability to harness the power of agents. Modify and personalize workflows effortlessly, ensuring your operations align perfectly with your goals. With this level of customization, the sky is the limit</p>
+            </div>
+            <div className="graph-container">
+                <CustomizableAnimation />
+            </div>
           </div>
         </section>
       </main>

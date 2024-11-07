@@ -1,0 +1,139 @@
+/* General Layout */
+.help-page {
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    background-color: #03000c;
+    color: rgba(170, 162, 195, 0.87);
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+/* Header Section with Dot Grid */
+.help-header {
+    position: relative;
+    text-align: center;
+    padding: 5rem 2rem;
+    background-color: #03000c;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+  
+  .help-header h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #faf9f6;
+    margin-bottom: 1rem;
+    z-index: 1;
+    position: relative;
+  }
+  
+  .help-header h1 span {
+    color: #646cff;
+  }
+  
+  .help-header h1:hover {
+    text-shadow: 0 0 10px rgba(100, 108, 255, 0.8), 0 0 20px rgba(100, 108, 255, 0.6);
+    transition: text-shadow 0.3s ease;
+  }
+  
+  .help-header p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: rgba(170, 162, 195, 0.87);
+    max-width: 600px;
+    margin: 0 auto;
+    padding-top: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+  
+  
+  /* Content Wrapper */
+  .help-content-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+  
+  /* Table of Contents */
+  .help-toc {
+    position: sticky;
+    top: 6rem;
+    width: 250px;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  }
+  
+  .help-toc h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #646cff;
+  }
+  
+  .help-toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .help-toc ul li {
+    margin-bottom: 0.8rem;
+  }
+  
+  .help-toc ul li a {
+    color: rgba(170, 162, 195, 0.87);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+  }
+  
+  .help-toc ul li.active a {
+    color: #646cff;
+    font-weight: bold;
+  }
+  
+  .help-toc ul li a:hover {
+    color: #646cff;
+  }
+  
+  /* Help Content */
+  .help-content {
+    max-width: 900px;
+    flex-grow: 1;
+  }
+  
+  .help-section {
+    padding: 2rem 1rem;
+    margin-bottom: 3rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    line-height: 1.8;
+    color: rgba(170, 162, 195, 0.87);
+  }
+  
+  .help-section h2 {
+    font-size: 2rem;
+    color: #646cff;
+    margin-bottom: 1rem;
+  }
+  
+  .help-section ul,
+  .help-section ol {
+    padding-left: 1.5rem;
+  }
+  
+  .help-section ul li,
+  .help-section ol li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .help-section code {
+    background-color: rgba(100, 108, 255, 0.2);
+    color: #646cff;
+    padding: 0.3rem 0.5rem;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+  

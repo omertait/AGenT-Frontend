@@ -46,18 +46,7 @@
                   "type": "tool",
                   "tool": "calculator",
                   "input_data_func": "{\"x\": int(last_step_result.split(',')[0]), \"y\": int(last_step_result.split(',')[1]), \"operation\": last_step_result.split(',')[2]}"
-                }
-              ]
-            }
-          },
-          {
-            "id": "node3",
-            "type": "customNode",
-            "data": {
-              "isStartNode": false,
-              "taskName": "Store Result in Memory",
-              "agent": "Math Solver",
-              "steps": [
+                },
                 {
                   "type": "update_memory",
                   "memory_arg": "calculation_result"
@@ -66,7 +55,7 @@
             }
           },
           {
-            "id": "node4",
+            "id": "node3",
             "type": "customNode",
             "data": {
               "isStartNode": false,
@@ -84,8 +73,7 @@
         ],
         "edges": [
           { "source": "node1", "target": "node2" },
-          { "source": "node2", "target": "node3" },
-          { "source": "node3", "target": "node4" }
+          { "source": "node2", "target": "node3" }
         ]
       },
       {

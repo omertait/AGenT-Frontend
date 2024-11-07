@@ -10,6 +10,7 @@ import {
   useEdgesState,
 } from 'reactflow';
 import examples from './Dashboard/ExamplesWorkflows.json';
+import HelpPage from './Help/HelpPage';
 
 function App() {
   
@@ -96,6 +97,12 @@ function App() {
             </>
           }
         />
+        <Route path="help" element={
+          <>
+            <TopBar active='Help'/>
+            <HelpPage />
+          </>
+        } />
       </Routes>
     </Router>
   );

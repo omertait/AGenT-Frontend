@@ -11,6 +11,7 @@ const TopBar = ({active}) => {
             <Link className={active=='Tasks'? 'link active' : 'link'} to={{pathname:'/Tasks'}}>Tasks</Link>
             <Link className={active=='Agents'? 'link active' : 'link'} to={{pathname:'/Agents'}}>Agents</Link>
             <Link className={active=='Tools'? 'link active' : 'link'} to={{pathname:'/Tools'}}>Tools</Link>
+            <Link className={active=='Help'? 'link active' : 'link'} to={{pathname:'/Help'}}>Help</Link>
             </div>
         </div>
         </div>
