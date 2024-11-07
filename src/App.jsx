@@ -37,8 +37,13 @@ function App() {
     setAgents(json.agents || []);
     setTools(json.tools || []);
     const parsedNodes = (json.nodes || []).map((node, index) => generateLayout(node, index));
+    // add ids to edges
+    const parsedEdges = (json.edges || []).map((edge, index) => ({
+      ...edge,
+      id: index.toString()
+    }));
     setNodes(parsedNodes);
-    setEdges(json.edges || []);
+    setEdges(parsedEdges);
   };
 
   useEffect(() => {
@@ -87,7 +92,7 @@ function App() {
           element={
             <>
               <TopBar active='Tools'/>
-              <Tools tools={tools} setTools={setTools} />
+              <Tools tools={tools} setTools={setTools} setAgents={setAgents} />
             </>
           }
         />

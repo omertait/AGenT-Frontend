@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Tools.css';
 
-const ToolsTab = ({tools, setTools}) => {
+const ToolsTab = ({tools, setTools, setAgents}) => {
   
   const [editingTool, setEditingTool] = useState(null);
   const [newTool, setNewTool] = useState({
@@ -45,6 +45,11 @@ const ToolsTab = ({tools, setTools}) => {
 
   const deleteTool = (name) => {
     setTools(tools.filter(tool => tool.name !== name));
+    // remove tools from any agents that use it
+    setAgents(agents => agents.map(agent => ({
+      ...agent,
+      tools: agent.tools.filter(tool => tool !== name)
+    })));
   };
 
   const updateTool = (field, value, isNew = false) => {

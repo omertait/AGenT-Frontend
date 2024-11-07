@@ -13,28 +13,39 @@ const EditTask = ({ editNode, setEditNode, onSaveEdit ,agents}) => {
   const specialStrings = ['{task_input}', '{last_step_result}', '{memory["user_input"]}', '{memory["conversation_history"]}', '{memory}'];
 
   const highlightSpecialStrings = (text) => {
+    // Safeguard against undefined or null text
+    if (!text) return <span>{text || ''}</span>;
+  
     // Escape basic special strings for regex
     const staticSpecialStrings = specialStrings
-      .filter((str) => !str.includes('[\'') && !str.includes('[\"')) // Exclude dynamic `memory` forms
-      .map((str) => str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')); // Escape static strings
+      .filter((str) => !str.includes('[\'') && !str.includes('[\"')) // Exclude dynamic memory forms
+      .map((str) => str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')); // Escape special characters
   
-    // Regex for dynamic memory keys like {memory["key"]}
-    const dynamicMemoryPattern = '\\{memory\\[(["\']).*?\\1\\]}';
+    // Regex for dynamic memory keys like {memory['key']} or {memory["key"]}
+    const dynamicMemoryPattern = '\\{memory\\[(["\']).+?\\1\\]}';
   
     // Combine static and dynamic patterns into one regex
-    const regex = new RegExp(`(${[...staticSpecialStrings, dynamicMemoryPattern].join('|')})`, 'g');
+    const combinedPattern = new RegExp(`(${[...staticSpecialStrings, dynamicMemoryPattern].join('|')})`, 'g');
   
-    // Split the text by the regex and map each part
-    const parts = text.split(regex);
-    return parts.map((part, index) =>
-      part.match(new RegExp(dynamicMemoryPattern)) || staticSpecialStrings.includes(part) ? (
-        <span key={index} className="special-string">{part}</span>
-      ) : (
-        <span key={index}>{part}</span>
-      )
-    );
+    // Split the text by the regex and filter out empty parts
+    const parts = (text.split(combinedPattern) || []).filter((part) => typeof part === 'string' && part.trim() !== '');
+  
+    // Highlight matched parts
+    return parts.map((part, index) => {
+      // Test if part matches either static or dynamic patterns
+      if (new RegExp(dynamicMemoryPattern).test(part) || staticSpecialStrings.some((str) => new RegExp(`^${str}$`).test(part))) {
+        return (
+          <span key={index} className="special-string">
+            {part}
+          </span>
+        );
+      }
+      // Return plain text for unmatched parts
+      return <span key={index}>{part}</span>;
+    });
   };
   
+
 
   // make sure that the highlighted-text div width and height are the same as the textarea every time the textarea resizes
   const syncScroll = (index) => {
@@ -46,7 +57,10 @@ const EditTask = ({ editNode, setEditNode, onSaveEdit ,agents}) => {
 
   const syncSize = (index) => {
     const textarea = textareaRefs.current[index];
+    if (!textarea) return; // Safeguard against null or undefined refs
     const highlightedText = textarea.nextSibling;
+    if (!highlightedText) return; // Safeguard against null or undefined sibling
+    
     highlightedText.style.width = `${textarea.clientWidth}px`;
     highlightedText.style.height = `${textarea.clientHeight}px`;
   };
@@ -83,7 +97,7 @@ const EditTask = ({ editNode, setEditNode, onSaveEdit ,agents}) => {
   };
 
   useEffect(() => {
-    const tools = agents.filter(agent => agent.name === editNode.data.agent)[0]?.tools || [];
+    const tools = agents.filter(agent => agent.name === editNode.data.agent)[0]?.tools || [];    
     setToolsOptions(tools);
     steps.forEach((step, index) => {
       if (step.type === 'tool') {
@@ -135,12 +149,13 @@ const EditTask = ({ editNode, setEditNode, onSaveEdit ,agents}) => {
       
       <div className="form-group">
         <label>Assigned Agent</label>
-        <select value={editNode.data.agent}
+        <select value={editNode.data.agent ? editNode.data.agent : 'Unassigned'}
+        
           onChange={(e) => setEditNode({ ...editNode, data: { ...editNode.data, agent: e.target.value } })} >
             {agents.map((agent) => (
                 <option key={agent.id} value={agent.name}>{agent.name}</option>
             ))}
-            <option value="Unassigned" selected disabled hidden>Unassigned</option>
+            {agents.length === 0 && <option value="Unassigned"  hidden>No Agents Available</option>}
         </select>
       </div>
       <h4>Steps</h4>
@@ -177,13 +192,13 @@ const EditTask = ({ editNode, setEditNode, onSaveEdit ,agents}) => {
             <>
               <div className="form-group">
                 <label>Tool</label>
-                <select value={step.tool}
+                <select value={toolsOptions.includes(step.tool) ? step.tool : 'Unassigned'}
                     onChange={(e) => handleStepChange(index, 'tool_name', e.target.value)}>
                         
                         {toolsOptions.map((tool) => (
                             <option key={tool} value={tool}>{tool}</option>
                         ))}
-                        {toolsOptions.length === 0 && <option value="Unassigned" selected disabled hidden>No Tools Available</option>}
+                        <option value="Unassigned"  hidden>No Tools Available</option>
                         
                 </select>
               </div>
