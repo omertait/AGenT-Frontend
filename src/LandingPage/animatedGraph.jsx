@@ -75,8 +75,8 @@ const AnimatedGraph = () => {
                 y1={y1}
                 x2={x2}
                 y2={y2}
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
               />
