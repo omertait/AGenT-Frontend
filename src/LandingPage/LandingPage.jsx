@@ -63,7 +63,7 @@ const LandingPage = () => {
       </main>
       <footer>
         <p>&copy; 2024 AGent - Developed by omertait. All rights reserved.</p>
-        <a href="https://https://github.com/omertait/AGent-Frontend" target="_blank" rel="noreferrer">GitHub Repository</a>
+        <a href="https://github.com/omertait/AGent-Frontend" target="_blank" rel="noreferrer">GitHub Repository</a>
       </footer>
     </div>
   );
