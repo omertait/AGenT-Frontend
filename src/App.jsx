@@ -13,7 +13,7 @@ import examples from './Dashboard/ExamplesWorkflows.json';
 import HelpPage from './Help/HelpPage';
 
 function App() {
-  
+  const [ws, setWs] = useState(null);
   const [agents, setAgents] = useState([]);
   const [tools, setTools] = useState([]);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -21,7 +21,8 @@ function App() {
 
   // keeping track of the current example index
   const [currentExampleIndex, setCurrentExampleIndex] = useState(0);
-
+  // keeping track of the connection status to the server
+  const [isConnected, setIsConnected] = useState(false);
 
   const generateLayout = (node, index) => {
     const baseX = 100; // Arbitrary starting position
@@ -46,6 +47,25 @@ function App() {
     setNodes(parsedNodes);
     setEdges(parsedEdges);
   };
+
+  useEffect(() => {
+    const websocket = new WebSocket("ws://localhost:8765");
+
+    websocket.onopen = () => {
+      setIsConnected(true);
+      setWs(websocket);
+    };
+
+    websocket.onclose = () => {
+      setIsConnected(false);
+      setWs(null);
+    };
+
+    return () => {
+      websocket.close();
+    };
+  }, []);
+
 
   useEffect(() => {
     const exampleJson = examples.workflows[currentExampleIndex];
@@ -75,7 +95,9 @@ function App() {
                agents={agents}
                tools={tools}
                setCurrentExampleIndex={setCurrentExampleIndex}
-               currentExampleIndex={currentExampleIndex}/>
+               currentExampleIndex={currentExampleIndex}
+               isConnected={isConnected}
+               ws={ws}/>
             </>
           }
         />

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
@@ -14,7 +14,7 @@ import TaskNode from './components/TaskNode';
 import './Dashboard.css';
 import EditTask from './EditTask';
 import GenerateWindow from './GenerateWindow';
-import { checkIfGraphConnected } from './build';
+import { checkIfGraphConnected, graphToJSON } from './build';
 
 
 const nodeTypes = [
@@ -87,8 +87,9 @@ const nodesTypes = { customNode: TaskNode };
 const Dashboard = ({
   nodes, setNodes, onNodesChange,
   edges, setEdges, onEdgesChange,
-  agents, tools, setCurrentExampleIndex, currentExampleIndex
+  agents, tools, setCurrentExampleIndex, currentExampleIndex, isConnected, ws
 }) => {
+
 
   const [isGenWindowOpen, setGenWindowOpen] = useState(false);
   const [prompt, setPrompt] = useState('');
@@ -182,6 +183,21 @@ const Dashboard = ({
     setEditNode(null);
   }, [setNodes]);
 
+  const handleBuildClick = () => {
+    if (!ws || ws.readyState !== WebSocket.OPEN) {
+      console.error("WebSocket is not connected");
+      return;
+    }
+    
+    const [isValid, msg] = checkIfGraphConnected(nodes, edges, tools, agents);
+    if (!isValid) {
+      console.error(msg);
+      return;
+    }
+    const json = graphToJSON(nodes, edges, tools, agents);
+    ws.send(json);
+  };
+
   return (
     <div className="Dashboard">
       <aside>
@@ -200,11 +216,19 @@ const Dashboard = ({
         ))}
         </div>
         <div className='actions'>
+        <div className='connection-container'>
+            <div className="connection-status">
+            <div
+                className={`status-indicator ${isConnected ? "online" : "offline"}`}
+            ></div>
+            <span>{isConnected ? "Connected" : "Offline"}</span>
+            </div>
+        </div>
           {/* TO IMPLEMENT - generating workflows with prompt to llms based on JSON Schema */}
           {/* currently using fixed examples */}
           {/* <button className='generate-button' onClick={handleOpenGenWindow}>Generate</button> */}
           <button className='generate-button' onClick={() => setCurrentExampleIndex((currentExampleIndex+1)%4)}>Generate</button>
-          <button className='build-button' onClick={()=> console.log(checkIfGraphConnected(nodes, edges, tools, agents))}>Build</button>
+          <button className='build-button' onClick={handleBuildClick}>Build</button>
         </div>
       </aside>
       <GenerateWindow

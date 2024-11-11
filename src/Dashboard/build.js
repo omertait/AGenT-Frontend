@@ -98,16 +98,16 @@ const checkIfGraphConnected = (nodes, edges, tools, agents) => {
   // check if there is only one start node and retrieve it
   const startNodes = nodes.filter((node) => node.data.isStartNode);
   if (startNodes.length > 1) {
-    return "Invalid - Multiple start nodes";
+    return [false,"Invalid - Multiple start nodes"];
   }
   const startNode = startNodes[0];
 
   if (!startNode) {
-    return "Invalid - No start node";
+    return [false, "Invalid - No start node"];
   }
 
   if (!startNode) {
-    return "Invalid - No start node";
+    return [false, "Invalid - No start node"];
   }
 
   let queue = [startNode.id];
@@ -122,9 +122,9 @@ const checkIfGraphConnected = (nodes, edges, tools, agents) => {
     });
   }
   if (Object.keys(visited).length === nodes.length){
-    return graphToJSON(nodes, edges, tools, agents);
+    return [true, "valid"] //graphToJSON(nodes, edges, tools, agents);
   }
-  return "invalid - graph not connected"
+  return [false, "invalid - graph not connected"]
 }
 
 
