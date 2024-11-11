@@ -99,7 +99,7 @@ const Dashboard = ({
 
   const handleSubmit = (prompt) => {
     console.log('Submitting:', prompt);
-    // Add your code here to send the prompt to your backend
+    // TO IMPLEMENT - send prompt to backend to generate workflow
     setGenWindowOpen(false);
   };
 
@@ -226,8 +226,7 @@ const Dashboard = ({
         </div>
           {/* TO IMPLEMENT - generating workflows with prompt to llms based on JSON Schema */}
           {/* currently using fixed examples */}
-          {/* <button className='generate-button' onClick={handleOpenGenWindow}>Generate</button> */}
-          <button className='generate-button' onClick={() => setCurrentExampleIndex((currentExampleIndex+1)%4)}>Generate</button>
+          <button className='generate-button' onClick={() => isConnected ? handleOpenGenWindow() : setCurrentExampleIndex((currentExampleIndex+1)%4)}>Generate</button>
           <button className='build-button' onClick={handleBuildClick}>Build</button>
         </div>
       </aside>
