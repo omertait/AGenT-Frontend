@@ -39,7 +39,7 @@ const NoCodeAnimation = () => {
     }, [index, displayedText]);
 
     return (
-        <div className="code-container">
+        <div>
             <pre>{displayedText}</pre>
         </div>
     );

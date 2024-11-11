@@ -3,10 +3,10 @@ import './customizableAnimation.css';
 
 const CustomizableAnimation = () => {
     const initialModuleStates = [
-        { index: 0, left: 0, top: 0, isActive: false, isSwapping: false, offset: { x: 0, y: 0 }, color: null },
-        { index: 1, left: 100, top: 0, isActive: false, isSwapping: false, offset: { x: 0, y: 0 }, color: null },
-        { index: 2, left: 0, top: 100, isActive: false, isSwapping: false, offset: { x: 0, y: 0 }, color: null },
-        { index: 3, left: 100, top: 100, isActive: false, isSwapping: false, offset: { x: 0, y: 0 }, color: null },
+        { index: 0, left: 100, top: 0, isActive: false, isSwapping: false, offset: { x: 0, y: 0 }, color: null },
+        { index: 1, left: 200, top: 0, isActive: false, isSwapping: false, offset: { x: 0, y: 0 }, color: null },
+        { index: 2, left: 100, top: 100, isActive: false, isSwapping: false, offset: { x: 0, y: 0 }, color: null },
+        { index: 3, left: 200, top: 100, isActive: false, isSwapping: false, offset: { x: 0, y: 0 }, color: null },
     ];
 
     const [moduleStates, setModuleStates] = useState(initialModuleStates);

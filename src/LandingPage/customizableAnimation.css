@@ -160,9 +160,3 @@
         opacity: 0;
     }
 }
-
-/* Hover effect */
-.module:hover .module-inner {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(100, 108, 255, 0.04);
-}

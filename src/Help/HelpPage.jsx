@@ -39,7 +39,7 @@ return (
             <div className="dot-grid"></div>
             <h1>AGent Help Center</h1>
             <p>
-                Learn how to define agents, configure tools, create workflows, and manage tasks with our comprehensive guide.
+                Learn how to define agents, configure tools, create workflows, and manage tasks with our Documentation.
             </p>
         </header>
         <div className="help-content-wrapper">
