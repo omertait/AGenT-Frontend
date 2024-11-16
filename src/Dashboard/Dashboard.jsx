@@ -15,6 +15,7 @@ import './Dashboard.css';
 import EditTask from './EditTask';
 import GenerateWindow from './GenerateWindow';
 import { checkIfGraphConnected, graphToJSON } from './build';
+import Sidebar from './Sidebar';
 
 
 const nodeTypes = [
@@ -200,36 +201,14 @@ const Dashboard = ({
 
   return (
     <div className="Dashboard">
-      <aside>
-        <div className="dndnodes">
-        <h2>Drag & Drop Tasks</h2>
-        <div className="description">You can drag these Task-Nodes to the Canvas on the right.</div>
-        {nodeTypes.map((node) => (
-          <div
-            key={node.type}
-            className="dndnode"
-            onDragStart={(event) => event.dataTransfer.setData('application/reactflow', node.label)}
-            draggable
-          >
-            {node.label}
-          </div>
-        ))}
-        </div>
-        <div className='actions'>
-        <div className='connection-container'>
-            <div className="connection-status">
-            <div
-                className={`status-indicator ${isConnected ? "online" : "offline"}`}
-            ></div>
-            <span>{isConnected ? "Connected" : "Offline"}</span>
-            </div>
-        </div>
-          {/* TO IMPLEMENT - generating workflows with prompt to llms based on JSON Schema */}
-          {/* currently using fixed examples */}
-          <button className='generate-button' onClick={() => isConnected ? handleOpenGenWindow() : setCurrentExampleIndex((currentExampleIndex+1)%4)}>Generate</button>
-          <button className='build-button' onClick={handleBuildClick}>Build</button>
-        </div>
-      </aside>
+      <Sidebar 
+        nodeTypes={nodeTypes} 
+        handleOpenGenWindow={handleOpenGenWindow} 
+        setCurrentExampleIndex={setCurrentExampleIndex} 
+        handleBuildClick={handleBuildClick} 
+        isConnected={isConnected}
+        currentExampleIndex={currentExampleIndex}
+      />
       <GenerateWindow
         isOpen={isGenWindowOpen}
         onClose={handleCloseGenWindow}
