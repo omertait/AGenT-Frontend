@@ -85,7 +85,7 @@ const nodesTypes = { customNode: TaskNode };
 const Dashboard = ({
   nodes, setNodes, onNodesChange,
   edges, setEdges, onEdgesChange,
-  agents, tools, setCurrentExampleIndex, currentExampleIndex, isConnected, ws
+  agents, tools, setCurrentExampleIndex, currentExampleIndex, isConnected, ws, showPopup
 }) => {
 
 
@@ -184,12 +184,14 @@ const Dashboard = ({
   const handleBuildClick = () => {
     if (!ws || ws.readyState !== WebSocket.OPEN) {
       console.error("WebSocket is not connected");
+      showPopup("WebSocket is not connected", "distractive");
       return;
     }
     
     const [isValid, msg] = checkIfGraphConnected(nodes, edges, tools, agents);
     if (!isValid) {
       console.error(msg);
+      showPopup(msg, "distractive");
       return;
     }
     const json = graphToJSON(nodes, edges, tools, agents);

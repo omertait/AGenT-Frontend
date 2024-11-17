@@ -79,6 +79,7 @@ function App() {
 
   useEffect(() => {
     const websocket = new WebSocket("ws://localhost:8765");
+    
 
     websocket.onopen = () => {
       setIsConnected(true);
@@ -138,7 +139,8 @@ function App() {
                setCurrentExampleIndex={setCurrentExampleIndex}
                currentExampleIndex={currentExampleIndex}
                isConnected={isConnected}
-               ws={ws}/>
+               ws={ws}
+               showPopup={showPopup}/>
             </>
           }
         />
