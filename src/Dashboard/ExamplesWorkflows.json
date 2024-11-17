@@ -14,7 +14,7 @@
               { "name": "y", "type": "int", "description": "Second number", "required": true },
               { "name": "operation", "type": "string", "description": "One of: add/subtract/multiply/divide", "required": true }
             ],
-            "function": "def calculator_two_numbers(x, y, operation):\n    if operation == \"add\":\n        return x + y\n    elif operation == \"subtract\":\n        return x - y\n    elif operation == \"multiply\":\n        return x * y\n    elif operation == \"divide\":\n        return x / y\n    else:\n        return None"
+            "function": "def calculator_two_numbers(x, y, operation):\n    print(x,y,operation)\n    if operation == \"add\":\n        return x + y\n    elif operation == \"subtract\":\n        return x - y\n    elif operation == \"multiply\":\n        return x * y\n    elif operation == \"divide\":\n        return x / y\n    else:\n        return None"
           }
         ],
         "nodes": [
@@ -28,7 +28,7 @@
               "steps": [
                 {
                   "type": "llm_interact",
-                  "promptTemplate": "You are a math assistant. Respond to this question by extracting the numbers and the operation: {task_input}.",
+                  "promptTemplate": "You are a math assistant. Respond to this question by extracting the numbers and the operation. Output must be a valid JSON-like object: x:<number>, y:<number>, operation:<string>. valid operations are One of: add/subtract/multiply/divide. Responed only with the JSON. an example of valid JSON response: x:5, y:3, operation:add: Here is the question: {task_input}",
                   "model": "gpt-4o"
                 }
               ]
@@ -45,7 +45,7 @@
                 {
                   "type": "tool",
                   "tool": "calculator",
-                  "input_data_func": "{\"x\": int(last_step_result.split(',')[0]), \"y\": int(last_step_result.split(',')[1]), \"operation\": last_step_result.split(',')[2]}"
+                  "input_data_func": "{\"x\": int(task_input.split('x:')[1].split(',')[0]), \"y\": int(task_input.split('y:')[1].split(',')[0]), \"operation\": task_input.split('operation:')[1].split(',')[0]}"
                 },
                 {
                   "type": "update_memory",
@@ -64,7 +64,7 @@
               "steps": [
                 {
                   "type": "llm_interact",
-                  "promptTemplate": "You asked: {memory[\"user_input\"]}. Using the inputs extracted from your question, x={memory['x']}, y={memory['y']}, and operation={memory['operation']}, the calculated result is {memory['calculation_result']}. Here's how it works: ...",
+                  "promptTemplate": "You asked: {memory['user_input']}. Using the calculated result that is {memory['calculation_result']}, explain the solution. Here's how it works: ...",
                   "model": "gpt-4o-mini"
                 }
               ]
