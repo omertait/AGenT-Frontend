@@ -10,7 +10,10 @@ import {
   useEdgesState,
 } from 'reactflow';
 import examples from './Dashboard/ExamplesWorkflows.json';
+import Ajv from "ajv";
+import schema from "./schema.json";
 import HelpPage from './Help/HelpPage';
+import Popup from "./Popup";
 
 function App() {
   const [ws, setWs] = useState(null);
@@ -18,6 +21,10 @@ function App() {
   const [tools, setTools] = useState([]);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [popup, setPopup] = useState(null);
+
+  
+
 
   // keeping track of the current example index
   const [currentExampleIndex, setCurrentExampleIndex] = useState(0);
@@ -35,17 +42,39 @@ function App() {
     };
   };
 
+  const validateJson = (json) => {
+    const ajv = new Ajv();
+    const validate = ajv.compile(schema);
+    const valid = validate(json);
+
+    if (!valid) {
+      throw new Error(
+        `Invalid JSON structure: ${JSON.stringify(validate.errors, null, 2)}`
+      );
+    }
+  };
+
   const loadWorkflow = (json) => {
-    setAgents(json.agents || []);
-    setTools(json.tools || []);
-    const parsedNodes = (json.nodes || []).map((node, index) => generateLayout(node, index));
-    // add ids to edges
-    const parsedEdges = (json.edges || []).map((edge, index) => ({
-      ...edge,
-      id: index.toString()
-    }));
-    setNodes(parsedNodes);
-    setEdges(parsedEdges);
+    try {
+      // Validate JSON before loading
+      validateJson(json);
+
+      setAgents(json.agents || []);
+      setTools(json.tools || []);
+      const parsedNodes = (json.nodes || []).map((node, index) =>
+        generateLayout(node, index)
+      );
+      const parsedEdges = (json.edges || []).map((edge, index) => ({
+        ...edge,
+        id: index.toString(),
+      }));
+
+      setNodes(parsedNodes);
+      setEdges(parsedEdges);
+    } catch (error) {
+      console.error("Error loading workflow:", error.message);
+      showPopup(error.message, "distractive");
+    }
   };
 
   useEffect(() => {
@@ -72,6 +101,18 @@ function App() {
 
     loadWorkflow(exampleJson);
   }, [currentExampleIndex]);
+
+
+  const showPopup = (message, type) => {
+    setPopup(
+      <Popup
+        message={message}
+        type={type}
+        duration={3000}
+        onClose={() => setPopup(null)}
+      />
+    );
+  };
 
   return (
     <Router basename={import.meta.env.BASE_URL}>
@@ -126,7 +167,9 @@ function App() {
           </>
         } />
       </Routes>
+      {popup}
     </Router>
+    
   );
 }
 

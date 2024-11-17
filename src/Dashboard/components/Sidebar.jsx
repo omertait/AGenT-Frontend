@@ -1,5 +1,5 @@
 import React from 'react';
-import ConnectionStatus from '../ConnectionStatus';
+import ConnectionStatus from '../../ConnectionStatus';
 
 const Sidebar = ({ 
   nodeTypes, 

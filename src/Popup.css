@@ -1,0 +1,31 @@
+.popup {
+    position: fixed;
+    width: 200px;
+    word-wrap: break-word;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    color: #f2f0f0;
+    font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-size: 1rem;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  }
+  
+  .popup.primary {
+    background-color: #646cff; /* Blue for primary */
+  }
+  
+  .popup.distractive {
+    background-color: #dc3545; /* Red for distractive */
+  }
+  
+  .popup.fade-out {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  

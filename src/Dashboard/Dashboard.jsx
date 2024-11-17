@@ -1,21 +1,18 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
-  useNodesState,
-  useEdgesState,
   Controls,
-  MiniMap,
   Background,
   MarkerType,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import TaskNode from './components/TaskNode';
 import './Dashboard.css';
-import EditTask from './EditTask';
-import GenerateWindow from './GenerateWindow';
+import EditTask from './components/EditTask';
+import GenerateWindow from './components/GenerateWindow';
 import { checkIfGraphConnected, graphToJSON } from './build';
-import Sidebar from './Sidebar';
+import Sidebar from './components/Sidebar';
 
 
 const nodeTypes = [
